@@ -15,20 +15,80 @@ Use [www.sqlteaching.com](http://www.sqlteaching.com/) or [sqlbolt.com](http://s
 ### Instructions
 1. Create a table called Person that records a person's ID, Name, Age, Height ( in cm ), City, FavoriteColor. 
     * ID should be an auto-incrementing id/primary key - Use type: INTEGER PRIMARY KEY AUTOINCREMENT
+    
+    create table People (
+  id integer primary key autoincrement,
+  name varchar(40),
+  age integer,
+  height integer,
+  city varchar(40),
+  favorite_color varchar(40)
+  )
+    
 2. Add 5 different people into the Person database. 
     * Remember to not include the ID because it should auto-increment.
+    
+    
+    
 3. List all the people in the Person table by Height from tallest to shortest.
+
+  select * from people
+  order by height desc
+
 4. List all the people in the Person table by Height from shortest to tallest.
+
+select * from people
+order by height
+
 5. List all the people in the Person table by Age from oldest to youngest.
+
+  select * from people
+  order by age desc
+
 6. List all the people in the Person table older than age 20.
+
+select * from people
+where age > 20
+
 7. List all the people in the Person table that are exactly 18.
+
+select * from people
+ where age = 18
+
 8. List all the people in the Person table that are less than 20 and older than 30.
+
+select * from people
+where age > 30 or age < 20
+
 9. List all the people in the Person table that are not 27 (Use not equals).
+
+select * from people
+where age != 27
+
 10. List all the people in the Person table where their favorite color is not red.
+
+select * from people
+where favorite_color != 'red'
+
 11. List all the people in the Person table where their favorite color is not red and is not blue.
+
+select * from people
+where favorite_color != 'red' and favorite_color != 'blue'
+
 12. List all the people in the Person table where their favorite color is orange or green.
+
+select * from people
+where favorite_color = 'orange' or favorite_color = 'green'
+
 13. List all the people in the Person table where their favorite color is orange, green or blue (use IN).
+
+select * from people
+where favorite_color IN ('orange','green','blue')
+
 14. List all the people in the Person table where their favorite color is yellow or purple (use IN).
+
+select * from people
+where favorite_color IN ('yellow','purple')
 
 ### Solution
 
@@ -183,13 +243,36 @@ SELECT * FROM Person WHERE FavoriteColor IN ( "yellow", "purple" )
 ### Instructions
 
 1. Create a table called Orders that records: PersonID, ProductName, ProductPrice, Quantity.
+
+create table Orders (
+    PersonID integer,
+    product_name string,
+    product_price float,
+    quantity integer
+    )
+
 2. Add 5 Orders to the Orders table.
     * Make orders for at least two different people.
     * PersonID should be different for different people.
+    
+    insert into Orders (PersonID, product_name, product_price, quantity)
+    values (2, 'Cheese', 6.50, 3),(1, 'Milk', 5.50, 2),(2, 'Eggs', 6.50, 4),(3, 'Tortillas', 6.50, 1),(4, 'Salsa', 4.50, 3)
+    
 3. Select all the records from the Orders table.
+
+select * from Orders
+
 4. Calculate the total number of products ordered.
+
+     select sum(quantity) from Orders
+
 5. Calculate the total order price.
+
+     select sum(quantity*product_price) from Orders
+
 6. Calculate the total order price by a single PersonID.
+
+     select (quantity*product_price) as "total", PersonID from Orders
 
 ### Solution
 
@@ -265,10 +348,32 @@ SELECT SUM(ProductPrice * Quantity) FROM Orders WHERE PersonID = 0;
 ### Instructions
 
 1. Add 3 new Artists to the Artist table. ( It's already created )
+
+insert into Artist (Name) 
+values ('COIN'),('Saint Motel'),('Hippo Campus')
+
 2. Select 10 artists in reverse alphabetical order.
+
+select * from Artist
+ORDER BY Name DESC
+limit 10
+
 3. Select 5 artists in alphabetical order.
+
+select * from Artist
+ORDER BY Name 
+limit 5
+
 4. Select all artists that start with the word "Black".
+
+select * from Artist
+where name like 'Black%'
+
 5. Select all artists that contain the word "Black".
+
+select * from Artist
+where name like '%black%'
+
 
 ### Solution 
 
@@ -333,11 +438,31 @@ SELECT * FROM Artist WHERE Name LIKE '%Black%';
 ### Instructions
 
 1. List all Employee first and last names only that live in Calgary.
+
+select FirstName, LastName from Employee
+where city = 'Calgary'
+
 2. Find the first and last name and birthdate for the youngest employee.
+
+select MAX(BirthDate), FirstName, LastName from employee
+
 3. Find the first and last name and birthdate for the oldest employee.
+
+select MIN(BirthDate), FirstName, LastName from employee
+
 4. Find everyone that reports to Nancy Edwards (Use the ReportsTo column).
    * You will need to query the employee table to find the Id for Nancy Edwards
+   select * from employee
+where ReportsTo = 2
+
+select * from employee
+where ReportsTo IN (
+  SELECt EmployeeId from employee where FirstName = 'Nancy' and LastName = 'Edwards')
+   
 5. Count how many people live in Lethbridge.
+
+select count() from employee 
+ where City = 'Lethbridge'
 
 ### Solution
 
@@ -402,13 +527,39 @@ SELECT COUNT(*) FROM Employee WHERE City = "Lethbridge";
 ### Instructions
 
 1. Count how many orders were made from the USA.
+
+ select count() from invoice
+ where BillingCountry = 'USA'
+
 2. Find the largest order total amount.
+
+ select MAX(total), * from invoice
+
 3. Find the smallest order total amount.
+
+ select MIN(total), * from invoice
+
 4. Find all orders bigger than $5.
+
+select * from invoice where total > 5
+
 5. Count how many orders were smaller than $5.
+
+select count(*) from invoice 
+where total < 5
+
 6. Count how many orders were in CA, TX, or AZ (use IN).
+
+select count(*) from invoice
+where BillingState IN ('CA','AZ','TX')
+
 7. Get the average total of the orders.
+
+SELECT AVG(total) from invoice
+
 8. Get the total sum of the orders.
+
+select sum(total) from invoice
 
 ### Solution
 
